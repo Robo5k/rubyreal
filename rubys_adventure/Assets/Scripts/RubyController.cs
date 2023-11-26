@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using UnityEngine.SceneManagement;
 
 public class RubyController : MonoBehaviour
 {
@@ -13,6 +15,9 @@ public class RubyController : MonoBehaviour
 
     public AudioClip throwSound;
     public AudioClip hitSound;
+    public TextMeshProUGUI scoreText;
+    
+    public int score = 0;
 
     public int health { get { return currentHealth; } }
     int currentHealth;
@@ -111,7 +116,13 @@ public class RubyController : MonoBehaviour
 
         UIHealthBar.instance.SetValue(currentHealth / (float)maxHealth);
     }
+    public void ChangeScore(int scoreAmount)
+    {
+        score += scoreAmount;
 
+        scoreText.text = "Fixed Robots: " + score.ToString();
+
+    }
     void Launch()
     {
         GameObject projectileObject = Instantiate(projectilePrefab, rigidbody2d.position + Vector2.up * 0.5f, Quaternion.identity);

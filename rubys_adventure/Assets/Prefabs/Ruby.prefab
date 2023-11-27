@@ -103,7 +103,13 @@ MonoBehaviour:
   speed: 3
   maxHealth: 5
   projectilePrefab: {fileID: 0}
+  throwSound: {fileID: 0}
+  hitSound: {fileID: 0}
+  scoreText: {fileID: 0}
+  score: 0
   timeInvincible: 2
+  damageEffect: {fileID: 7993002181080301232, guid: e185164c03a02f04583a4c5d41166cdd, type: 3}
+  healEffect: {fileID: 765336210981188573, guid: c98bde7ee812c8847aed36e92cec66a1, type: 3}
 --- !u!50 &6376575982262681975
 Rigidbody2D:
   serializedVersion: 4

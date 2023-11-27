@@ -30,8 +30,13 @@ public class RubyController : MonoBehaviour
     float horizontal;
     float vertical;
 
+    public ParticleSystem damageEffect;
+    public ParticleSystem healEffect;
+
     Animator animator;
     Vector2 lookDirection = new Vector2(1, 0);
+
+
 
     AudioSource audioSource;
 
@@ -42,6 +47,9 @@ public class RubyController : MonoBehaviour
         animator = GetComponent<Animator>();
 
         currentHealth = maxHealth;
+
+        damageEffect.GetComponent<ParticleSystem>().enableEmission = false;
+        healEffect.GetComponent<ParticleSystem>().enableEmission = false;
 
         audioSource = GetComponent<AudioSource>();
     }
@@ -108,6 +116,8 @@ public class RubyController : MonoBehaviour
 
             isInvincible = true;
             invincibleTimer = timeInvincible;
+             ParticleSystem projectileObject = Instantiate(damageEffect, rigidbody2d.position + Vector2.up * 0.5f, Quaternion.identity);
+              
             animator.SetTrigger("Hit");
             PlaySound(hitSound);
         }
@@ -115,6 +125,9 @@ public class RubyController : MonoBehaviour
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
 
         UIHealthBar.instance.SetValue(currentHealth / (float)maxHealth);
+        if (amount > 0)
+        {
+        ParticleSystem projectileObject2 = Instantiate(healEffect, rigidbody2d.position + Vector2.up * 0.5f, Quaternion.identity); }
     }
     public void ChangeScore(int scoreAmount)
     {
@@ -122,6 +135,25 @@ public class RubyController : MonoBehaviour
 
         scoreText.text = "Fixed Robots: " + score.ToString();
 
+    }
+    //particle effect trigger (Notwroking???? possibly need to connect it to the proper animation but that still didint work, had other people double check my code aswell and still diding work)
+    void OnTriggerEnter2D()
+    {
+        damageEffect.GetComponent<ParticleSystem>().enableEmission = true;
+        StartCoroutine(stopDamageEffect());
+        healEffect.GetComponent<ParticleSystem>().enableEmission = true;
+        StartCoroutine(stopHealEffect());
+    }
+
+    IEnumerator stopDamageEffect()
+    {
+        yield return new WaitForSeconds(0.4f);
+        damageEffect.GetComponent<ParticleSystem>().enableEmission = false;
+    }
+    IEnumerator stopHealEffect()
+    {
+        yield return new WaitForSeconds(0.4f);
+        healEffect.GetComponent<ParticleSystem>().enableEmission = false;
     }
     void Launch()
     {
